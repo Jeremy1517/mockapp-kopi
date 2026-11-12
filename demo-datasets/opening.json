@@ -1,0 +1,16 @@
+{
+  "pantry": [
+    {
+      "stock": {
+        "espresso-beans": 3400,
+        "fresh-milk": 9600,
+        "chocolate-sauce": 1350,
+        "vanilla-syrup": 320,
+        "caramel-sauce": 900,
+        "kopi-powder": 2600,
+        "condensed-milk": 1300
+      },
+      "log": []
+    }
+  ]
+}
