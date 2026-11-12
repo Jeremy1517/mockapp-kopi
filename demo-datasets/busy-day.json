@@ -1,0 +1,630 @@
+{
+  "pantry": [
+    {
+      "stock": {
+        "espresso-beans": 1880,
+        "fresh-milk": 1810,
+        "chocolate-sauce": 980,
+        "vanilla-syrup": 90,
+        "caramel-sauce": 830,
+        "kopi-powder": 2560,
+        "condensed-milk": 740
+      },
+      "log": [
+        {
+          "id": "busy-0040",
+          "at": "2026-11-12T08:55:30.000Z",
+          "kind": "brew",
+          "recipe": "cappuccino",
+          "cups": 3,
+          "used": [
+            {
+              "ingredient": "espresso-beans",
+              "amount": 54
+            },
+            {
+              "ingredient": "fresh-milk",
+              "amount": 390
+            }
+          ]
+        },
+        {
+          "id": "busy-0039",
+          "at": "2026-11-12T08:41:00.000Z",
+          "kind": "count",
+          "ingredient": "chocolate-sauce",
+          "counted": 980,
+          "expected": 1125
+        },
+        {
+          "id": "busy-0038",
+          "at": "2026-11-12T08:26:30.000Z",
+          "kind": "brew",
+          "recipe": "kopi",
+          "cups": 6,
+          "used": [
+            {
+              "ingredient": "condensed-milk",
+              "amount": 180
+            },
+            {
+              "ingredient": "kopi-powder",
+              "amount": 120
+            }
+          ]
+        },
+        {
+          "id": "busy-0037",
+          "at": "2026-11-12T08:12:00.000Z",
+          "kind": "brew",
+          "recipe": "latte",
+          "cups": 4,
+          "used": [
+            {
+              "ingredient": "espresso-beans",
+              "amount": 72
+            },
+            {
+              "ingredient": "fresh-milk",
+              "amount": 880
+            }
+          ]
+        },
+        {
+          "id": "busy-0036",
+          "at": "2026-11-12T07:57:30.000Z",
+          "kind": "brew",
+          "recipe": "cortado",
+          "cups": 2,
+          "used": [
+            {
+              "ingredient": "espresso-beans",
+              "amount": 36
+            },
+            {
+              "ingredient": "fresh-milk",
+              "amount": 120
+            }
+          ]
+        },
+        {
+          "id": "busy-0035",
+          "at": "2026-11-12T07:43:00.000Z",
+          "kind": "brew",
+          "recipe": "americano",
+          "cups": 4,
+          "used": [
+            {
+              "ingredient": "espresso-beans",
+              "amount": 72
+            }
+          ]
+        },
+        {
+          "id": "busy-0034",
+          "at": "2026-11-12T07:28:30.000Z",
+          "kind": "brew",
+          "recipe": "espresso",
+          "cups": 4,
+          "used": [
+            {
+              "ingredient": "espresso-beans",
+              "amount": 72
+            }
+          ]
+        },
+        {
+          "id": "busy-0033",
+          "at": "2026-11-12T07:14:00.000Z",
+          "kind": "count",
+          "ingredient": "fresh-milk",
+          "counted": 3200,
+          "expected": 360
+        },
+        {
+          "id": "busy-0032",
+          "at": "2026-11-12T06:59:30.000Z",
+          "kind": "brew",
+          "recipe": "kopi",
+          "cups": 7,
+          "used": [
+            {
+              "ingredient": "condensed-milk",
+              "amount": 210
+            },
+            {
+              "ingredient": "kopi-powder",
+              "amount": 140
+            }
+          ]
+        },
+        {
+          "id": "busy-0031",
+          "at": "2026-11-12T06:45:00.000Z",
+          "kind": "brew",
+          "recipe": "flat-white",
+          "cups": 6,
+          "used": [
+            {
+              "ingredient": "espresso-beans",
+              "amount": 108
+            },
+            {
+              "ingredient": "fresh-milk",
+              "amount": 720
+            }
+          ]
+        },
+        {
+          "id": "busy-0030",
+          "at": "2026-11-12T06:30:30.000Z",
+          "kind": "brew",
+          "recipe": "latte",
+          "cups": 5,
+          "used": [
+            {
+              "ingredient": "espresso-beans",
+              "amount": 90
+            },
+            {
+              "ingredient": "fresh-milk",
+              "amount": 1100
+            }
+          ]
+        },
+        {
+          "id": "busy-0029",
+          "at": "2026-11-12T06:16:00.000Z",
+          "kind": "brew",
+          "recipe": "cappuccino",
+          "cups": 5,
+          "used": [
+            {
+              "ingredient": "espresso-beans",
+              "amount": 90
+            },
+            {
+              "ingredient": "fresh-milk",
+              "amount": 650
+            }
+          ]
+        },
+        {
+          "id": "busy-0028",
+          "at": "2026-11-12T06:01:30.000Z",
+          "kind": "brew",
+          "recipe": "kopi",
+          "cups": 9,
+          "used": [
+            {
+              "ingredient": "condensed-milk",
+              "amount": 270
+            },
+            {
+              "ingredient": "kopi-powder",
+              "amount": 180
+            }
+          ]
+        },
+        {
+          "id": "busy-0027",
+          "at": "2026-11-12T05:47:00.000Z",
+          "kind": "delivery",
+          "ingredient": "kopi-powder",
+          "packs": 1,
+          "amount": 1000
+        },
+        {
+          "id": "busy-0026",
+          "at": "2026-11-12T05:32:30.000Z",
+          "kind": "delivery",
+          "ingredient": "condensed-milk",
+          "packs": 2,
+          "amount": 1000
+        },
+        {
+          "id": "busy-0025",
+          "at": "2026-11-12T05:18:00.000Z",
+          "kind": "brew",
+          "recipe": "americano",
+          "cups": 6,
+          "used": [
+            {
+              "ingredient": "espresso-beans",
+              "amount": 108
+            }
+          ]
+        },
+        {
+          "id": "busy-0024",
+          "at": "2026-11-12T05:03:30.000Z",
+          "kind": "brew",
+          "recipe": "espresso",
+          "cups": 8,
+          "used": [
+            {
+              "ingredient": "espresso-beans",
+              "amount": 144
+            }
+          ]
+        },
+        {
+          "id": "busy-0023",
+          "at": "2026-11-12T04:49:00.000Z",
+          "kind": "brew",
+          "recipe": "mocha",
+          "cups": 5,
+          "used": [
+            {
+              "ingredient": "chocolate-sauce",
+              "amount": 125
+            },
+            {
+              "ingredient": "espresso-beans",
+              "amount": 90
+            },
+            {
+              "ingredient": "fresh-milk",
+              "amount": 900
+            }
+          ]
+        },
+        {
+          "id": "busy-0022",
+          "at": "2026-11-12T04:34:30.000Z",
+          "kind": "brew",
+          "recipe": "latte",
+          "cups": 7,
+          "used": [
+            {
+              "ingredient": "espresso-beans",
+              "amount": 126
+            },
+            {
+              "ingredient": "fresh-milk",
+              "amount": 1540
+            }
+          ]
+        },
+        {
+          "id": "busy-0021",
+          "at": "2026-11-12T04:20:00.000Z",
+          "kind": "brew",
+          "recipe": "flat-white",
+          "cups": 4,
+          "used": [
+            {
+              "ingredient": "espresso-beans",
+              "amount": 72
+            },
+            {
+              "ingredient": "fresh-milk",
+              "amount": 480
+            }
+          ]
+        },
+        {
+          "id": "busy-0020",
+          "at": "2026-11-12T04:05:30.000Z",
+          "kind": "brew",
+          "recipe": "cappuccino",
+          "cups": 6,
+          "used": [
+            {
+              "ingredient": "espresso-beans",
+              "amount": 108
+            },
+            {
+              "ingredient": "fresh-milk",
+              "amount": 780
+            }
+          ]
+        },
+        {
+          "id": "busy-0019",
+          "at": "2026-11-12T03:51:00.000Z",
+          "kind": "brew",
+          "recipe": "caramel-macchiato",
+          "cups": 4,
+          "used": [
+            {
+              "ingredient": "vanilla-syrup",
+              "amount": 60
+            },
+            {
+              "ingredient": "fresh-milk",
+              "amount": 880
+            },
+            {
+              "ingredient": "espresso-beans",
+              "amount": 72
+            },
+            {
+              "ingredient": "caramel-sauce",
+              "amount": 40
+            }
+          ]
+        },
+        {
+          "id": "busy-0018",
+          "at": "2026-11-12T03:36:30.000Z",
+          "kind": "count",
+          "ingredient": "vanilla-syrup",
+          "counted": 150,
+          "expected": 275
+        },
+        {
+          "id": "busy-0017",
+          "at": "2026-11-12T03:22:00.000Z",
+          "kind": "brew",
+          "recipe": "americano",
+          "cups": 5,
+          "used": [
+            {
+              "ingredient": "espresso-beans",
+              "amount": 90
+            }
+          ]
+        },
+        {
+          "id": "busy-0016",
+          "at": "2026-11-12T03:07:30.000Z",
+          "kind": "brew",
+          "recipe": "kopi",
+          "cups": 8,
+          "used": [
+            {
+              "ingredient": "condensed-milk",
+              "amount": 240
+            },
+            {
+              "ingredient": "kopi-powder",
+              "amount": 160
+            }
+          ]
+        },
+        {
+          "id": "busy-0015",
+          "at": "2026-11-12T02:53:00.000Z",
+          "kind": "brew",
+          "recipe": "macchiato",
+          "cups": 2,
+          "used": [
+            {
+              "ingredient": "espresso-beans",
+              "amount": 36
+            },
+            {
+              "ingredient": "fresh-milk",
+              "amount": 60
+            }
+          ]
+        },
+        {
+          "id": "busy-0014",
+          "at": "2026-11-12T02:38:30.000Z",
+          "kind": "brew",
+          "recipe": "cortado",
+          "cups": 3,
+          "used": [
+            {
+              "ingredient": "espresso-beans",
+              "amount": 54
+            },
+            {
+              "ingredient": "fresh-milk",
+              "amount": 180
+            }
+          ]
+        },
+        {
+          "id": "busy-0013",
+          "at": "2026-11-12T02:24:00.000Z",
+          "kind": "brew",
+          "recipe": "latte",
+          "cups": 9,
+          "used": [
+            {
+              "ingredient": "espresso-beans",
+              "amount": 162
+            },
+            {
+              "ingredient": "fresh-milk",
+              "amount": 1980
+            }
+          ]
+        },
+        {
+          "id": "busy-0012",
+          "at": "2026-11-12T02:09:30.000Z",
+          "kind": "delivery",
+          "ingredient": "espresso-beans",
+          "packs": 1,
+          "amount": 1000
+        },
+        {
+          "id": "busy-0011",
+          "at": "2026-11-12T01:55:00.000Z",
+          "kind": "delivery",
+          "ingredient": "fresh-milk",
+          "packs": 3,
+          "amount": 6000
+        },
+        {
+          "id": "busy-0010",
+          "at": "2026-11-12T01:40:30.000Z",
+          "kind": "brew",
+          "recipe": "caramel-macchiato",
+          "cups": 3,
+          "used": [
+            {
+              "ingredient": "vanilla-syrup",
+              "amount": 45
+            },
+            {
+              "ingredient": "fresh-milk",
+              "amount": 660
+            },
+            {
+              "ingredient": "espresso-beans",
+              "amount": 54
+            },
+            {
+              "ingredient": "caramel-sauce",
+              "amount": 30
+            }
+          ]
+        },
+        {
+          "id": "busy-0009",
+          "at": "2026-11-12T01:26:00.000Z",
+          "kind": "brew",
+          "recipe": "latte",
+          "cups": 6,
+          "used": [
+            {
+              "ingredient": "espresso-beans",
+              "amount": 108
+            },
+            {
+              "ingredient": "fresh-milk",
+              "amount": 1320
+            }
+          ]
+        },
+        {
+          "id": "busy-0008",
+          "at": "2026-11-12T01:11:30.000Z",
+          "kind": "brew",
+          "recipe": "mocha",
+          "cups": 4,
+          "used": [
+            {
+              "ingredient": "chocolate-sauce",
+              "amount": 100
+            },
+            {
+              "ingredient": "espresso-beans",
+              "amount": 72
+            },
+            {
+              "ingredient": "fresh-milk",
+              "amount": 720
+            }
+          ]
+        },
+        {
+          "id": "busy-0007",
+          "at": "2026-11-12T00:57:00.000Z",
+          "kind": "brew",
+          "recipe": "kopi",
+          "cups": 10,
+          "used": [
+            {
+              "ingredient": "condensed-milk",
+              "amount": 300
+            },
+            {
+              "ingredient": "kopi-powder",
+              "amount": 200
+            }
+          ]
+        },
+        {
+          "id": "busy-0006",
+          "at": "2026-11-12T00:42:30.000Z",
+          "kind": "brew",
+          "recipe": "cappuccino",
+          "cups": 7,
+          "used": [
+            {
+              "ingredient": "espresso-beans",
+              "amount": 126
+            },
+            {
+              "ingredient": "fresh-milk",
+              "amount": 910
+            }
+          ]
+        },
+        {
+          "id": "busy-0005",
+          "at": "2026-11-12T00:28:00.000Z",
+          "kind": "brew",
+          "recipe": "flat-white",
+          "cups": 5,
+          "used": [
+            {
+              "ingredient": "espresso-beans",
+              "amount": 90
+            },
+            {
+              "ingredient": "fresh-milk",
+              "amount": 600
+            }
+          ]
+        },
+        {
+          "id": "busy-0004",
+          "at": "2026-11-12T00:13:30.000Z",
+          "kind": "brew",
+          "recipe": "americano",
+          "cups": 9,
+          "used": [
+            {
+              "ingredient": "espresso-beans",
+              "amount": 162
+            }
+          ]
+        },
+        {
+          "id": "busy-0003",
+          "at": "2026-11-11T23:59:00.000Z",
+          "kind": "brew",
+          "recipe": "espresso",
+          "cups": 6,
+          "used": [
+            {
+              "ingredient": "espresso-beans",
+              "amount": 108
+            }
+          ]
+        },
+        {
+          "id": "busy-0002",
+          "at": "2026-11-11T23:44:30.000Z",
+          "kind": "brew",
+          "recipe": "latte",
+          "cups": 8,
+          "used": [
+            {
+              "ingredient": "espresso-beans",
+              "amount": 144
+            },
+            {
+              "ingredient": "fresh-milk",
+              "amount": 1760
+            }
+          ]
+        },
+        {
+          "id": "busy-0001",
+          "at": "2026-11-11T23:30:00.000Z",
+          "kind": "brew",
+          "recipe": "kopi",
+          "cups": 12,
+          "used": [
+            {
+              "ingredient": "condensed-milk",
+              "amount": 360
+            },
+            {
+              "ingredient": "kopi-powder",
+              "amount": 240
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
