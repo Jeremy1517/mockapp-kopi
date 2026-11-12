@@ -1,90 +1,59 @@
-import Link from "next/link";
-import { Card, buttonClass } from "@/components/ui";
-import { formatNumber, formatPercent } from "@/lib/format";
-import { RELIEFS, RESIDENT_BRACKETS, REBATE, TAX_YEARS } from "@/lib/tax/rules";
+import { Suspense } from "react";
+import { CupsBoard } from "@/components/cups-board";
+import { Shelf } from "@/components/shelf";
+import { PageTitle } from "@/components/ui";
+import { INGREDIENTS, isIngredientId } from "@/lib/coffee/ingredients";
+import { levelOf, type Stock } from "@/lib/coffee/stock";
+import { getPantry } from "@/server/pantry/service";
 
-const steps = [
-  {
-    title: "Enter your details",
-    body: "Identity, income from every source, and the reliefs you're entitled to.",
-  },
-  {
-    title: "See your tax live",
-    body: "A running estimate shows chargeable income, tax by band and your balance as you type.",
-  },
-  {
-    title: "Submit & get a reference",
-    body: "The server re-validates and recomputes everything, then issues an acknowledgement number.",
-  },
-];
-
-const bands = RESIDENT_BRACKETS.map((b, i) => {
-  const previousUpTo = i === 0 ? 0 : (RESIDENT_BRACKETS[i - 1].upTo ?? 0);
-  return { from: i === 0 ? 0 : previousUpTo + 1, to: b.upTo, rate: b.rate };
-});
-
-export default function Home() {
+export default function ShelfPage({ searchParams }: PageProps<"/">) {
   return (
-    <div className="space-y-16">
-      <section className="grid items-center gap-10 pt-4 lg:grid-cols-[1.2fr_1fr]">
-        <div>
-          <p className="mb-3 inline-flex rounded-full bg-kopi-100 px-3 py-1 text-xs font-semibold text-kopi-800">
-            Filing open for YA {TAX_YEARS.join(", ")}
-          </p>
-          <h1 className="text-4xl font-semibold tracking-tight text-stone-900 sm:text-5xl">
-            File your income tax return over one cup of kopi.
-          </h1>
-          <p className="mt-5 max-w-xl text-lg text-stone-600">
-            A simple, guided e-filing flow: tell us what you earned, claim your reliefs, and see exactly
-            how your tax is worked out before you submit.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link href="/file" className={buttonClass("primary")}>
-              Start a return
-            </Link>
-            <Link href="/submissions" className={buttonClass("secondary")}>
-              View submissions
-            </Link>
-          </div>
-        </div>
+    <>
+      <PageTitle title="On the shelf">
+        <p>
+          Every ingredient your menu is made from, and nothing else. Tap one to log a delivery or count
+          what&apos;s left. The dashed red line on each container is where you reorder.
+        </p>
+      </PageTitle>
+      <Suspense fallback={<ShelfSkeleton />}>
+        <ShelfWithStock searchParams={searchParams} />
+      </Suspense>
+    </>
+  );
+}
 
-        <Card title="Resident tax bands" description="Applied to chargeable income after reliefs.">
-          <table className="w-full text-sm">
-            <tbody className="divide-y divide-stone-100 tabular-nums">
-              {bands.map((b) => (
-                <tr key={b.from}>
-                  <td className="py-1.5 text-stone-600">
-                    {b.to === null ? `Above ${formatNumber(b.from - 1)}` : `${formatNumber(b.from)} – ${formatNumber(b.to)}`}
-                  </td>
-                  <td className="py-1.5 text-right font-medium text-stone-900">{formatPercent(b.rate, 0)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <p className="mt-4 text-xs text-stone-500">
-            Every resident gets {formatNumber(RELIEFS.individual)} individual relief, plus a{" "}
-            {formatNumber(REBATE.amount)} rebate when chargeable income is {formatNumber(REBATE.chargeableIncomeThreshold)}{" "}
-            or less. Non-residents pay a flat 30%.
-          </p>
-        </Card>
-      </section>
+async function ShelfWithStock({ searchParams }: Pick<PageProps<"/">, "searchParams">) {
+  const [{ item }, { stock }] = await Promise.all([searchParams, getPantry()]);
+  return (
+    <>
+      <ReorderSummary stock={stock} />
+      <Shelf stock={stock} initial={isIngredientId(item) ? item : undefined} />
+      <CupsBoard stock={stock} />
+    </>
+  );
+}
 
-      <section>
-        <h2 className="mb-6 text-lg font-semibold text-stone-900">How it works</h2>
-        <ol className="grid gap-4 md:grid-cols-3">
-          {steps.map((s, i) => (
-            <li key={s.title}>
-              <Card className="h-full">
-                <span className="flex size-8 items-center justify-center rounded-full bg-kopi-700 text-sm font-bold text-white">
-                  {i + 1}
-                </span>
-                <h3 className="mt-4 font-semibold text-stone-900">{s.title}</h3>
-                <p className="mt-1.5 text-sm text-stone-600">{s.body}</p>
-              </Card>
-            </li>
-          ))}
-        </ol>
-      </section>
+function ReorderSummary({ stock }: { stock: Stock }) {
+  const low = INGREDIENTS.filter((i) => levelOf(i.id, stock[i.id]) !== "ok").map((i, n) =>
+    n === 0 ? i.name : i.name.toLowerCase(),
+  );
+  if (low.length === 0) {
+    return <p className="mb-5 font-medium text-jade">Everything is above its reorder line.</p>;
+  }
+  const names = low.length === 1 ? low[0] : `${low.slice(0, -1).join(", ")} and ${low.at(-1)}`;
+  return (
+    <p className="mb-5 flex items-center gap-2.5 font-medium text-chili">
+      <span className="size-2.5 shrink-0 rounded-full bg-chili" aria-hidden="true" />
+      {low.length === 1 ? `${names} is below its reorder line.` : `${names} are below their reorder lines.`}
+    </p>
+  );
+}
+
+function ShelfSkeleton() {
+  return (
+    <div aria-busy="true" aria-label="Loading the shelf">
+      <div className="mb-5 h-6 w-72 max-w-full rounded bg-mint" />
+      <div className="h-[22rem] rounded-2xl border-2 border-tile bg-mint lg:h-[16rem]" />
     </div>
   );
 }

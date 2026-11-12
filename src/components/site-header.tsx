@@ -1,57 +1,38 @@
 import Link from "next/link";
+import { NavLinks } from "./nav-links";
 
-export function Logo() {
+/** An enamel mug: white body, jade rim. */
+function Logo() {
   return (
-    <svg viewBox="0 0 32 32" aria-hidden="true" className="size-8">
-      <rect width="32" height="32" rx="8" className="fill-kopi-700" />
+    <svg viewBox="0 0 40 40" aria-hidden="true" className="size-10 shrink-0">
       <path
-        d="M9 13h12v5a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5v-5Z"
-        className="fill-kopi-100"
+        d="M9 12h19v14a7 7 0 0 1-7 7h-5a7 7 0 0 1-7-7V12Z"
+        fill="#fff"
+        stroke="var(--color-jade)"
+        strokeWidth="2.5"
       />
-      <path
-        d="M21 14.5h1.25a2.25 2.25 0 0 1 0 4.5H21"
-        fill="none"
-        strokeWidth="1.6"
-        className="stroke-kopi-100"
-      />
-      <path
-        d="M13 8.5c0 1-1 1.25-1 2.25M16.5 8.5c0 1-1 1.25-1 2.25"
-        fill="none"
-        strokeWidth="1.4"
-        strokeLinecap="round"
-        className="stroke-kopi-300"
-      />
+      <path d="M9 12h19" stroke="var(--color-jade)" strokeWidth="5" />
+      <path d="M28 16h2.5a4 4 0 0 1 0 8H28" fill="none" stroke="var(--color-jade)" strokeWidth="2.5" />
+      <path d="M15 21.5c0-1.6 1.2-2.5 3.5-2.5s3.5.9 3.5 2.5-1.2 2.5-3.5 2.5-3.5-.9-3.5-2.5Z" fill="#5b3421" />
     </svg>
   );
 }
 
-const links = [
-  { href: "/file", label: "File a return" },
-  { href: "/submissions", label: "Submissions" },
-] as const;
-
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-20 border-b border-stone-200 bg-white/85 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-        <Link href="/" className="flex items-center gap-2.5">
+    <header className="bg-porcelain">
+      <div className="tile-strip h-3.5" aria-hidden="true" />
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-4 py-3 sm:px-6">
+        <Link
+          href="/"
+          className="flex items-center gap-2.5 rounded-md text-jade focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-jade"
+        >
           <Logo />
-          <span className="text-base font-semibold tracking-tight text-stone-900">
-            Kopi<span className="text-kopi-600">Tax</span>
-          </span>
+          <span className="font-sign text-lg leading-none">Kopi Counter</span>
         </Link>
-        <nav className="flex items-center gap-1 text-sm font-medium">
-          {links.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              className="rounded-md px-3 py-2 text-stone-600 transition hover:bg-stone-100 hover:text-stone-900"
-            >
-              {l.label}
-            </Link>
-          ))}
-        </nav>
+        <NavLinks />
       </div>
+      <div className="h-px bg-tile" />
     </header>
   );
 }

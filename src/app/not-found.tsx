@@ -3,15 +3,19 @@ import { buttonClass } from "@/components/ui";
 
 export default function NotFound() {
   return (
-    <div className="mx-auto max-w-md py-20 text-center">
-      <p className="text-sm font-semibold text-kopi-600">404</p>
-      <h1 className="mt-2 text-2xl font-semibold text-stone-900">We couldn&apos;t find that page</h1>
-      <p className="mt-2 text-sm text-stone-600">
-        The return or page you&apos;re looking for doesn&apos;t exist or has been removed.
+    <div className="max-w-lg py-12">
+      <h1 className="font-sign text-4xl text-jade">Not on the menu</h1>
+      <p className="mt-3 text-lg text-ink-soft">
+        There&apos;s no page or recipe at this address. It may have been renamed.
       </p>
-      <Link href="/" className={`${buttonClass("primary")} mt-8`}>
-        Back to home
-      </Link>
+      <div className="mt-8 flex flex-wrap gap-3">
+        <Link href="/recipes" className={buttonClass()}>
+          See all recipes
+        </Link>
+        <Link href="/" className={buttonClass("quiet")}>
+          Go to the shelf
+        </Link>
+      </div>
     </div>
   );
 }

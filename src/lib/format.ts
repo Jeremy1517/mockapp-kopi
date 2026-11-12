@@ -1,25 +1,22 @@
-import { CURRENCY, LOCALE, TIME_ZONE } from "./tax/rules";
+const LOCALE = "en-MY";
+const TIME_ZONE = "Asia/Kuala_Lumpur";
 
-const money = new Intl.NumberFormat(LOCALE, {
-  style: "currency",
-  currency: CURRENCY,
-  minimumFractionDigits: 2,
-});
-
-const plain = new Intl.NumberFormat(LOCALE, { maximumFractionDigits: 0 });
-
-const dateTime = new Intl.DateTimeFormat(LOCALE, {
-  dateStyle: "medium",
-  timeStyle: "short",
+const day = new Intl.DateTimeFormat(LOCALE, {
+  weekday: "long",
+  day: "numeric",
+  month: "long",
+  year: "numeric",
   timeZone: TIME_ZONE,
 });
 
-export const formatMoney = (n: number) => money.format(n);
-export const formatNumber = (n: number) => plain.format(n);
-export const formatPercent = (fraction: number, digits = 2) =>
-  `${(fraction * 100).toFixed(digits)}%`;
-export const formatDateTime = (iso: string) => dateTime.format(new Date(iso));
+const time = new Intl.DateTimeFormat(LOCALE, { hour: "numeric", minute: "2-digit", timeZone: TIME_ZONE });
 
-/** SG1234567890 → SG******7890 */
-export const maskTaxId = (taxId: string) =>
-  taxId.length > 6 ? `${taxId.slice(0, 2)}${"•".repeat(taxId.length - 6)}${taxId.slice(-4)}` : taxId;
+/** "Wednesday, 12 November 2026" in the shop's time zone. */
+export const formatDay = (iso: string) => day.format(new Date(iso));
+
+/** "5:42 pm" in the shop's time zone. */
+export const formatTime = (iso: string) => time.format(new Date(iso));
+
+/** Calendar day in the shop's time zone, for grouping. */
+export const dayKey = (iso: string) =>
+  new Intl.DateTimeFormat("en-CA", { timeZone: TIME_ZONE }).format(new Date(iso));

@@ -10,8 +10,9 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## Project notes
 
-- Mock income-tax e-filing app. Rates, caps and open years live only in `src/lib/tax/rules.ts`.
-- `src/lib/tax/calculate.ts` is a pure function — keep I/O out of it and cover changes in `calculate.test.ts`.
-- All filing rules go through `submitTaxReturn()` in `src/server/submissions/service.ts`; both the Server Action and `POST /api/submissions` call it.
-- Cache Components is on: uncached reads (the JSON store, `params`) must sit inside `<Suspense>`.
+- Mock inventory app for a coffee shop. The shelf holds only ingredients a recipe uses; `catalog.test.ts` fails if one isn't.
+- Ingredients live only in `src/lib/coffee/ingredients.ts`, recipes (amounts, layers, steps) only in `src/lib/coffee/recipes.ts`.
+- `src/lib/coffee/stock.ts` is pure — keep I/O out of it and cover changes in `stock.test.ts`.
+- Every stock change goes through `logBrew`, `logDelivery` or `logCount` in `src/server/pantry/service.ts`; the Server Actions (`src/app/actions.ts`) and the `POST /api/*` routes both call them.
+- Cache Components is on: uncached reads (the JSON store, `searchParams`) must sit inside `<Suspense>`.
 - Run `npm run check` (lint + typecheck + tests) before committing.
