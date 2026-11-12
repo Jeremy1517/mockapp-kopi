@@ -19,7 +19,7 @@ export const manglish: Dictionary = {
   stepper: { fewer: "Kurang one", more: "Tambah one" },
 
   shelf: {
-    title: "Rak got what",
+    title: "On the shelf",
     intro:
       "All the barang your menu need, nothing extra one. Tekan any one to log stock masuk or count balance. The red dotted line means time to order liao.",
     loading: "Loading the rak",
