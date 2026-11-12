@@ -11,19 +11,16 @@ drink on the menu, and a log of what was made and delivered. Built for demos and
   fills layer by layer. Log cups made and their ingredients come off the shelf.
 - **Bar log** — every brew, delivery and count, newest first.
 
-All text on the site is written in **English** and **Manglish**, and every page lives under its
-language (`/en/recipes`, `/manglish/recipes`). Light and dark themes share two greens, `#2b3b2c`
-and `#e8eedf`, swapped between modes.
+**Dark mode:** light and dark themes share two greens, `#2b3b2c` and `#e8eedf`, swapped between
+modes. The theme follows the system setting until someone picks one with the sun/moon button in
+the header; the choice is saved in the browser. `DARK_MODE_ENABLED` and `SHOW_THEME_TOGGLE` in
+`src/lib/theme.ts` switch it off or hide the button.
 
-Both are **switched off for now**:
-
-- Picking **Manglish** moves the switch, but the page stays in English, and `/manglish/...`
-  redirects to English. Add `"manglish"` to `ENABLED_LOCALES` in `src/i18n/config.ts` to turn it
-  on; the switch then reloads the same page in Manglish and remembers the choice.
-- The **dark mode** button is hidden from the header (`SHOW_THEME_TOGGLE` in `src/lib/theme.ts`).
-  When shown, it flips its moon/sun icon but the page stays light, whatever the system setting.
-  Set `DARK_MODE_ENABLED` to `true` there to turn dark mode on; the theme then follows the
-  system until someone picks one, and the choice is saved in the browser.
+**Languages:** all text on the site is written in **English** and **Manglish**, and every page
+lives under its language (`/en/recipes`, `/manglish/recipes`). Manglish is switched off for now:
+picking it moves the switch, but the page stays in English, and `/manglish/...` redirects to
+English. Add `"manglish"` to `ENABLED_LOCALES` in `src/i18n/config.ts` to turn it on; the switch
+then reloads the same page in Manglish and remembers the choice.
 
 The shelf holds ingredients only — no cups, lids or pastries — and only ones a recipe needs.
 
