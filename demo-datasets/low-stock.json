@@ -1,0 +1,41 @@
+{
+  "pantry": [
+    {
+      "stock": {
+        "espresso-beans": 540,
+        "fresh-milk": 1760,
+        "chocolate-sauce": 1350,
+        "vanilla-syrup": 0,
+        "caramel-sauce": 900,
+        "kopi-powder": 2600,
+        "condensed-milk": 400
+      },
+      "log": [
+        {
+          "id": "demo-0003",
+          "at": "2026-11-12T03:40:00.000Z",
+          "kind": "count",
+          "ingredient": "vanilla-syrup",
+          "counted": 0,
+          "expected": 320
+        },
+        {
+          "id": "demo-0002",
+          "at": "2026-11-12T02:15:00.000Z",
+          "kind": "brew",
+          "recipe": "espresso",
+          "cups": 30,
+          "used": [{ "ingredient": "espresso-beans", "amount": 540 }]
+        },
+        {
+          "id": "demo-0001",
+          "at": "2026-11-11T23:30:00.000Z",
+          "kind": "delivery",
+          "ingredient": "kopi-powder",
+          "packs": 1,
+          "amount": 1000
+        }
+      ]
+    }
+  ]
+}
