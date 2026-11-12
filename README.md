@@ -83,7 +83,8 @@ src/
     schema.ts                 Zod schemas for brew, delivery and count
   server/pantry/
     service.ts                The only way stock changes (server-only)
-    repository.ts             JSON-file persistence (server-only)
+    repository.ts             Persistence: a JSON file, or Firestore (server-only)
+demo-datasets/                Starting states for Previews
 ```
 
 ## Stock rules
@@ -116,8 +117,25 @@ curl -X POST localhost:3000/api/counts -H 'content-type: application/json' \
 
 Stock and the log are written to `.data/pantry.json` (git-ignored; override the folder with
 `DATA_DIR`). Delete the file to start again from opening stock. Writes are atomic and serialised
-within one Node process, which is fine locally; for anything shared, replace
-`src/server/pantry/repository.ts` with a real database.
+within one Node process, which is fine locally.
+
+If `DATA_PATH` is set, the app keeps the same data in Firestore instead: one document,
+`<DATA_PATH>/pantry/0000`, in the database named by `FIRESTORE_DATABASE`. Both stores are in
+`src/server/pantry/repository.ts`.
+
+## Previews
+
+G-Unit Test runs a live copy of a branch, called a Preview, on Cloud Run. It needs three things
+from this repository:
+
+- **A ticket key in the branch name**, in upper case, for example `feat/GUT-12-oat-milk`.
+- **`Dockerfile`** — builds the app and starts it on `PORT`.
+- **`demo-datasets/`** — each JSON file is one starting state that a Preview can begin with.
+  The file has the shape `{ "pantry": [ { "stock": { … }, "log": [ … ] } ] }`. G-Unit Test copies
+  it into Firestore and sets `DATA_PATH` and `FIRESTORE_DATABASE`, so each Preview has its own shelf.
+
+To add a starting state, add a file to `demo-datasets/`. An ingredient that the file leaves out
+gets its opening stock.
 
 ## CI
 
