@@ -40,7 +40,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# local mock database (see src/server/submissions/repository.ts)
+# local mock database (see src/server/pantry/repository.ts)
 /.data/
 
 # local Claude Code session memory
