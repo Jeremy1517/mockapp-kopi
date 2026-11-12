@@ -17,9 +17,14 @@ describe("proxy", () => {
     expect(visit("/").headers.get("location")).toBe("http://localhost/en");
   });
 
-  it("sends switched-off Manglish to the same page in English", () => {
-    expect(visit("/manglish/recipes/kopi").headers.get("location")).toBe("http://localhost/en/recipes/kopi");
-    expect(visit("/manglish").headers.get("location")).toBe("http://localhost/en");
-    expect(visit("/", "kopi-lang=manglish").headers.get("location")).toBe("http://localhost/en");
+  it("serves Manglish pages", () => {
+    expect(visit("/manglish/recipes/kopi").headers.get("location")).toBeNull();
+    expect(visit("/manglish").headers.get("location")).toBeNull();
+  });
+
+  it("opens bare URLs in the last language picked", () => {
+    expect(visit("/", "kopi-lang=manglish").headers.get("location")).toBe("http://localhost/manglish");
+    expect(visit("/log", "kopi-lang=manglish").headers.get("location")).toBe("http://localhost/manglish/log");
+    expect(visit("/", "kopi-lang=klingon").headers.get("location")).toBe("http://localhost/en");
   });
 });
