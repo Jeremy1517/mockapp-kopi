@@ -10,7 +10,7 @@ import { DARK_MODE_ENABLED, THEME_KEY as KEY } from "@/lib/theme";
  * browser; until someone picks, the theme follows the system setting.
  * `THEME_SCRIPT` in src/lib/theme.ts applies it before first paint, so the page never flashes.
  *
- * While DARK_MODE_ENABLED is false the button still flips between moon and sun,
+ * While DARK_MODE_ENABLED is false the button still flips between kopi and teh tarik,
  * but the page stays light.
  */
 
@@ -83,25 +83,49 @@ export function ThemeToggle() {
       title={t.header.darkMode}
       className="flex size-10 items-center justify-center rounded-full border-2 border-jade/25 text-jade transition-colors hover:border-jade focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-jade"
     >
-      {/* Moon in light mode, sun in dark mode */}
+      {/* A cup of kopi in light mode (switch to dark), teh tarik in dark mode (switch to light). */}
       <svg
         viewBox="0 0 24 24"
-        className={cx("size-5", displayed === null ? "dark:hidden" : displayed === "dark" && "hidden")}
-        aria-hidden="true"
-      >
-        <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z" fill="currentColor" />
-      </svg>
-      <svg
-        viewBox="0 0 24 24"
-        className={cx("size-5", displayed === null ? "hidden dark:block" : displayed === "light" && "hidden")}
+        className={cx("size-6", displayed === null ? "dark:hidden" : displayed === "dark" && "hidden")}
         aria-hidden="true"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth="1.6"
         strokeLinecap="round"
+        strokeLinejoin="round"
       >
-        <circle cx="12" cy="12" r="4.2" fill="currentColor" stroke="none" />
-        <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4" />
+        <path d="M9.5 2.8c-.9 1 .9 1.7 0 2.8M13 2.8c-.9 1 .9 1.7 0 2.8" strokeWidth="1.4" />
+        <path d="M4.5 8.5h13v5.5a5 5 0 0 1-5 5h-3a5 5 0 0 1-5-5V8.5Z" fill="#4a2414" />
+        <path d="M5.4 10.3h11.2" stroke="#b9773f" strokeWidth="1.5" strokeLinecap="butt" />
+        <path d="M17.5 10h1.3a2.4 2.4 0 0 1 0 4.8h-1.5" />
+        <path d="M3 21.3h16" />
+      </svg>
+      <svg
+        viewBox="0 0 24 24"
+        className={cx("size-6", displayed === null ? "hidden dark:block" : displayed === "light" && "hidden")}
+        aria-hidden="true"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        {/* Tea, then the thick pulled froth spilling over the rim, then the glass. */}
+        <path
+          d="M6.5 9.5h11l-1.2 10.6a1.8 1.8 0 0 1-1.8 1.6h-5a1.8 1.8 0 0 1-1.8-1.6L6.5 9.5Z"
+          fill="#b97a45"
+          stroke="none"
+        />
+        <path d="M6.6 9.4h10.8l-.2 2.1H6.8Z" fill="#fff4e2" stroke="none" />
+        {[
+          [8.3, 9.2, 1.9],
+          [11, 8.1, 2.4],
+          [14, 8.3, 2.2],
+          [16, 9.3, 1.7],
+        ].map(([x, y, r]) => (
+          <circle key={x} cx={x} cy={y} r={r} fill="#fff4e2" stroke="none" />
+        ))}
+        <path d="M6.5 9.5l1.2 10.6a1.8 1.8 0 0 0 1.8 1.6h5a1.8 1.8 0 0 0 1.8-1.6l1.2-10.6" />
       </svg>
     </button>
   );
