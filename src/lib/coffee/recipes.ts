@@ -458,6 +458,22 @@ export const RECIPES: readonly Recipe[] = [
       },
     ],
   },
+  {
+    slug: "kopi-o-kosong",
+    name: "Kopi O kosong",
+    count: { one: "kopi O kosong", other: "kopi O kosong" },
+    blurb: "Black kopi with nothing added: no condensed milk and no sugar, so the dark roast does the talking.",
+    cup: "kopitiam",
+    uses: [{ ingredient: "kopi-powder", amount: 20 }],
+    untracked: [{ name: "Boiling water", amount: "200 ml" }],
+    layers: [{ kind: "kopi", ml: 190 }],
+    steps: [
+      { text: "Warm a kopitiam cup with a splash of boiling water, then empty it." },
+      { text: "Put 20 g of kopi powder in the sock and pour over 200 ml of boiling water." },
+      { text: "Pull the kopi between two pots two or three times to air it." },
+      { text: "Strain it into the cup.", adds: "kopi" },
+    ],
+  },
 ];
 
 const bySlug = new Map(RECIPES.map((r) => [r.slug, r]));

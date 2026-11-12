@@ -6,9 +6,9 @@ drink on the menu, and a log of what was made and delivered. Built for demos and
 - **Shelf** — the seven ingredients the menu uses, drawn as containers filled to their stock level,
   with a dashed reorder line. Log a delivery or a physical count from here. Below it, the menu shows
   how many more cups of each drink the shelf can make and which ingredient runs out first.
-- **Recipes** — ten drinks (espresso, Americano, macchiato, cortado, flat white, cappuccino, latte,
-  mocha, caramel macchiato and kopi). Each recipe page plays its method step by step while the cup
-  fills layer by layer. Log cups made and their ingredients come off the shelf.
+- **Recipes** — eleven drinks (espresso, Americano, macchiato, cortado, flat white, cappuccino, latte,
+  mocha, caramel macchiato, kopi and kopi O kosong). Each recipe page plays its method step by step
+  while the cup fills layer by layer. Log cups made and their ingredients come off the shelf.
 - **Bar log** — every brew, delivery and count, newest first.
 
 All text on the site is written in **English** and **Manglish**, and every page lives under its
