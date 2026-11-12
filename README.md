@@ -11,6 +11,20 @@ drink on the menu, and a log of what was made and delivered. Built for demos and
   fills layer by layer. Log cups made and their ingredients come off the shelf.
 - **Bar log** — every brew, delivery and count, newest first.
 
+All text on the site is written in **English** and **Manglish**, and every page lives under its
+language (`/en/recipes`, `/manglish/recipes`). Light and dark themes share two greens, `#2b3b2c`
+and `#e8eedf`, swapped between modes.
+
+Both are **switched off for now**:
+
+- Picking **Manglish** moves the switch, but the page stays in English, and `/manglish/...`
+  redirects to English. Add `"manglish"` to `ENABLED_LOCALES` in `src/i18n/config.ts` to turn it
+  on; the switch then reloads the same page in Manglish and remembers the choice.
+- The **dark mode** button is hidden from the header (`SHOW_THEME_TOGGLE` in `src/lib/theme.ts`).
+  When shown, it flips its moon/sun icon but the page stays light, whatever the system setting.
+  Set `DARK_MODE_ENABLED` to `true` there to turn dark mode on; the theme then follows the
+  system until someone picks one, and the choice is saved in the browser.
+
 The shelf holds ingredients only — no cups, lids or pastries — and only ones a recipe needs.
 
 ## Stack
@@ -46,21 +60,27 @@ npm run dev        # http://localhost:3000
 
 ```
 src/
+  proxy.ts                    Adds the language to bare URLs (/recipes → /en/recipes)
   app/
-    page.tsx                  Shelf + cups left
-    recipes/page.tsx          The menu
-    recipes/[slug]/page.tsx   One recipe: animated pour, method, log cups made
-    log/page.tsx              Bar log
+    [lang]/layout.tsx         Root layout: <html lang>, theme script, header
+    [lang]/page.tsx           Shelf + cups left
+    [lang]/recipes/…          The menu, and one recipe with its animated pour
+    [lang]/log/page.tsx       Bar log
     actions.ts                Server Actions → pantry service
     api/…                     REST: pantry, brews, deliveries, counts
+  i18n/
+    config.ts                 Locales, URL helpers, the Localized type
+    dictionaries/en.ts        ← every piece of interface text
+    dictionaries/manglish.ts  Same keys, in Manglish
+    server.ts / client.tsx    Read the locale in Server / Client Components
   components/
     cup-drawing.tsx           Cross-section of a drink, layer by layer
     pour-stage.tsx            Plays a recipe's steps and pours the cup
     vessel.tsx                A container on the shelf
     shelf.tsx                 The shelf, delivery and count forms
   lib/coffee/
-    ingredients.ts            ← everything the shelf holds
-    recipes.ts                ← every drink: amounts, layers, steps
+    ingredients.ts            ← everything the shelf holds (names in both languages)
+    recipes.ts                ← every drink: amounts, layers, steps (text in both languages)
     stock.ts                  Pure stock maths (cups left, consume, levels)
     schema.ts                 Zod schemas for brew, delivery and count
   server/pantry/
@@ -82,6 +102,7 @@ src/
 
 ```bash
 curl localhost:3000/api/pantry                       # stock, cups left per drink, bar log
+# Add ?lang=manglish to any API URL for Manglish names and messages.
 
 curl -X POST localhost:3000/api/brews -H 'content-type: application/json' \
   -d '{"recipe":"latte","cups":2}'                   # 201, 422 invalid, 409 not enough stock

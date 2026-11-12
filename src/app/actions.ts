@@ -1,6 +1,7 @@
 "use server";
 
 import { refresh } from "next/cache";
+import { toLocale, type Locale } from "@/i18n/config";
 import type { FieldErrors } from "@/lib/coffee/schema";
 import { logBrew, logCount, logDelivery, type ChangeResult } from "@/server/pantry/service";
 
@@ -12,6 +13,9 @@ export interface ActionState {
   seq: number;
 }
 
+/** Forms send the page's locale in a hidden `locale` field so messages come back in it. */
+const localeOf = (formData: FormData): Locale => toLocale(formData.get("locale"));
+
 async function respond(prev: ActionState, change: Promise<ChangeResult>): Promise<ActionState> {
   const result = await change;
   if (!result.ok) {
@@ -22,13 +26,13 @@ async function respond(prev: ActionState, change: Promise<ChangeResult>): Promis
 }
 
 export async function brewAction(prev: ActionState, formData: FormData) {
-  return respond(prev, logBrew(Object.fromEntries(formData)));
+  return respond(prev, logBrew(Object.fromEntries(formData), localeOf(formData)));
 }
 
 export async function deliveryAction(prev: ActionState, formData: FormData) {
-  return respond(prev, logDelivery(Object.fromEntries(formData)));
+  return respond(prev, logDelivery(Object.fromEntries(formData), localeOf(formData)));
 }
 
 export async function countAction(prev: ActionState, formData: FormData) {
-  return respond(prev, logCount(Object.fromEntries(formData)));
+  return respond(prev, logCount(Object.fromEntries(formData), localeOf(formData)));
 }

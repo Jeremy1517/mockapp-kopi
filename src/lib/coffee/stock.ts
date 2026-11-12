@@ -1,3 +1,4 @@
+import { DEFAULT_LOCALE, type Locale } from "@/i18n/config";
 import { INGREDIENTS, getIngredient, type IngredientId, type Unit } from "./ingredients";
 import type { Recipe } from "./recipes";
 
@@ -63,13 +64,13 @@ export function formatAmount(amount: number, unit: Unit): string {
 }
 
 /** "1 bag", "3 bags". */
-export const formatPacks = (id: IngredientId, packs: number) => {
+export const formatPacks = (id: IngredientId, packs: number, locale: Locale = DEFAULT_LOCALE) => {
   const { pack } = getIngredient(id);
-  return `${packs} ${packs === 1 ? pack.one : pack.other}`;
+  return `${packs} ${(packs === 1 ? pack.one : pack.other)[locale]}`;
 };
 
 /** "1 latte", "3 lattes". */
-export const cupsOf = (recipe: Recipe, cups: number) =>
-  `${cups} ${cups === 1 ? recipe.count.one : recipe.count.other}`;
+export const cupsOf = (recipe: Recipe, cups: number, locale: Locale = DEFAULT_LOCALE) =>
+  `${cups} ${(cups === 1 ? recipe.count.one : recipe.count.other)[locale]}`;
 
 const round = (n: number) => Math.round(n * 100) / 100;

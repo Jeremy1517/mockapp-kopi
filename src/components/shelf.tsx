@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useActionState, useRef, useState, type Ref } from "react";
 import { countAction, deliveryAction, type ActionState } from "@/app/actions";
+import { useI18n } from "@/i18n/client";
 import { INGREDIENTS, getIngredient, type IngredientId } from "@/lib/coffee/ingredients";
 import { recipesUsing } from "@/lib/coffee/recipes";
 import { MAX_PACKS_PER_DELIVERY } from "@/lib/coffee/schema";
@@ -14,6 +15,7 @@ import { VesselDrawing } from "./vessel";
 const idle: ActionState = { status: "idle", seq: 0 };
 
 export function Shelf({ stock, initial }: { stock: Stock; initial?: IngredientId }) {
+  const { locale, t } = useI18n();
   const firstLow = INGREDIENTS.find((i) => levelOf(i.id, stock[i.id]) !== "ok")?.id;
   const [selected, setSelected] = useState<IngredientId>(initial ?? firstLow ?? INGREDIENTS[0].id);
   const panel = useRef<HTMLElement>(null);
@@ -32,7 +34,7 @@ export function Shelf({ stock, initial }: { stock: Stock; initial?: IngredientId
       <div
         className="rounded-2xl border-2 border-tile px-2 pt-6 pb-5 sm:px-4"
         style={{
-          backgroundColor: "#eaf2ed",
+          backgroundColor: "var(--color-wall)",
           backgroundImage:
             "linear-gradient(var(--color-tile) 1.5px, transparent 1.5px), linear-gradient(90deg, var(--color-tile) 1.5px, transparent 1.5px)",
           backgroundSize: "34px 34px",
@@ -66,7 +68,7 @@ export function Shelf({ stock, initial }: { stock: Stock; initial?: IngredientId
                   </span>
                   {/* The shelf plank: neighbouring cells join into one board. */}
                   <span className="-mx-px block h-3 bg-jade" aria-hidden="true" />
-                  <span className="-mx-px block h-1.5 bg-[#c6d9cf]" aria-hidden="true" />
+                  <span className="-mx-px block h-1.5 bg-plank-shadow" aria-hidden="true" />
                   <span
                     className={cx(
                       "mx-0.5 mt-2 block rounded-b-md border-t-4 px-1.5 pt-1.5 pb-2 transition-colors sm:mx-2 sm:px-2",
@@ -76,14 +78,14 @@ export function Shelf({ stock, initial }: { stock: Stock; initial?: IngredientId
                     )}
                   >
                     <span className="block text-[13px] leading-tight font-semibold sm:text-sm">
-                      {ingredient.name}
+                      {ingredient.name[locale]}
                     </span>
                     <span className="mt-0.5 block text-[15px] leading-tight font-bold whitespace-nowrap sm:font-sign sm:text-lg">
                       {formatAmount(amount, ingredient.unit)}
                     </span>
                     {level !== "ok" && (
-                      <span className="mt-1.5 inline-block rounded-sm bg-chili px-1.5 py-px text-xs font-bold text-white">
-                        {level === "out" ? "Out" : "Reorder"}
+                      <span className="mt-1.5 inline-block rounded-sm bg-chili px-1.5 py-px text-xs font-bold text-on-jade">
+                        {level === "out" ? t.shelf.tagOut : t.shelf.tagReorder}
                       </span>
                     )}
                   </span>
@@ -100,6 +102,7 @@ export function Shelf({ stock, initial }: { stock: Stock; initial?: IngredientId
 }
 
 function IngredientPanel({ id, amount, ref }: { id: IngredientId; amount: number; ref: Ref<HTMLElement> }) {
+  const { locale, t, href } = useI18n();
   const ingredient = getIngredient(id);
   const { unit, pack, reorderAt } = ingredient;
   const level = levelOf(id, amount);
@@ -114,33 +117,33 @@ function IngredientPanel({ id, amount, ref }: { id: IngredientId; amount: number
     >
       <div>
         <h2 id="shelf-panel-title" className="font-sign text-2xl text-jade">
-          {ingredient.name}
+          {ingredient.name[locale]}
         </h2>
         <p className="mt-2">
           <span className="font-sign text-4xl">{formatAmount(amount, unit)}</span>{" "}
-          <span className="text-ink-soft">on the shelf</span>
+          <span className="text-ink-soft">{t.shelf.onShelf}</span>
         </p>
         <p className={cx("mt-3 font-medium", level === "ok" ? "text-ink-soft" : "text-chili")}>
           {level === "out"
-            ? "Out of stock. Every drink that needs it is off the menu."
+            ? t.shelf.out
             : level === "low"
-              ? `Below the reorder line of ${formatAmount(reorderAt, unit)}.`
-              : `Reorder when it drops below ${formatAmount(reorderAt, unit)}.`}
+              ? t.shelf.low(formatAmount(reorderAt, unit))
+              : t.shelf.ok(formatAmount(reorderAt, unit))}
         </p>
         <p className="mt-3 text-ink-soft">
-          Used in{" "}
+          {t.shelf.usedIn}{" "}
           {usedIn.map((r, i) => (
             <span key={r.slug}>
-              {i > 0 && (i === usedIn.length - 1 ? " and " : ", ")}
+              {i > 0 && (i === usedIn.length - 1 ? ` ${t.and} ` : ", ")}
               <Link
-                href={`/recipes/${r.slug}`}
+                href={href(`/recipes/${r.slug}`)}
                 className="font-medium text-jade underline decoration-jade/30 underline-offset-2 hover:decoration-jade"
               >
-                {r.name}
+                {r.name[locale]}
               </Link>
             </span>
           ))}
-          . Arrives in {formatAmount(pack.amount, unit)} {pack.other}.
+          . {t.shelf.arrivesIn(formatAmount(pack.amount, unit), pack.other[locale])}
         </p>
       </div>
       <DeliveryForm id={id} />
@@ -150,6 +153,7 @@ function IngredientPanel({ id, amount, ref }: { id: IngredientId; amount: number
 }
 
 function DeliveryForm({ id }: { id: IngredientId }) {
+  const { locale, t } = useI18n();
   const [state, action, pending] = useActionState(deliveryAction, idle);
   const [packs, setPacks] = useState(1);
   const { pack, unit } = getIngredient(id);
@@ -157,15 +161,16 @@ function DeliveryForm({ id }: { id: IngredientId }) {
 
   return (
     <form action={action} className="border-t-2 border-tile pt-6 lg:border-t-0 lg:border-l-2 lg:pt-0 lg:pl-8">
-      <h3 className="text-lg font-semibold">Log a delivery</h3>
+      <h3 className="text-lg font-semibold">{t.shelf.delivery.title}</h3>
       <p className="mt-1 mb-4 text-sm text-ink-soft">
-        Count the {formatAmount(pack.amount, unit)} {pack.other} that came in.
+        {t.shelf.delivery.hint(formatAmount(pack.amount, unit), pack.other[locale])}
       </p>
       <input type="hidden" name="ingredient" value={id} />
+      <input type="hidden" name="locale" value={locale} />
       <Stepper
         id="delivery-packs"
         name="packs"
-        label={`${pack.other[0].toUpperCase()}${pack.other.slice(1)} received`}
+        label={t.shelf.delivery.received(pack.other[locale])}
         value={packs}
         onChange={setPacks}
         min={1}
@@ -174,7 +179,7 @@ function DeliveryForm({ id }: { id: IngredientId }) {
         describedBy={state.message ? "delivery-result" : undefined}
       />
       <button type="submit" disabled={pending} className={cx(buttonClass(), "mt-4")}>
-        {pending ? "Adding…" : `Add ${formatPacks(id, packs)}`}
+        {pending ? t.shelf.delivery.adding : t.shelf.delivery.add(formatPacks(id, packs, locale))}
       </button>
       {state.message && (
         <Notice key={state.seq} id="delivery-result" tone={state.status === "error" ? "error" : "done"}>
@@ -186,6 +191,7 @@ function DeliveryForm({ id }: { id: IngredientId }) {
 }
 
 function CountForm({ id, amount }: { id: IngredientId; amount: number }) {
+  const { locale, t } = useI18n();
   const [state, action, pending] = useActionState(countAction, idle);
   const { unit } = getIngredient(id);
   const error = state.fieldErrors?.amount?.[0];
@@ -199,13 +205,12 @@ function CountForm({ id, amount }: { id: IngredientId; amount: number }) {
 
   return (
     <form action={action} className="border-t-2 border-tile pt-6 lg:border-t-0 lg:border-l-2 lg:pt-0 lg:pl-8">
-      <h3 className="text-lg font-semibold">Record a count</h3>
-      <p className="mt-1 mb-4 text-sm text-ink-soft">
-        Weigh or measure what&apos;s really there. It replaces the number on the shelf.
-      </p>
+      <h3 className="text-lg font-semibold">{t.shelf.count.title}</h3>
+      <p className="mt-1 mb-4 text-sm text-ink-soft">{t.shelf.count.hint}</p>
       <input type="hidden" name="ingredient" value={id} />
+      <input type="hidden" name="locale" value={locale} />
       <label htmlFor="count-amount" className="mb-1.5 block text-sm font-semibold">
-        Amount in {unit === "g" ? "grams" : "millilitres"}
+        {t.shelf.count.label(t.units[unit])}
       </label>
       <div className="flex items-center gap-2">
         <input
@@ -224,7 +229,7 @@ function CountForm({ id, amount }: { id: IngredientId; amount: number }) {
         <span className="text-ink-soft">{unit}</span>
       </div>
       <button type="submit" disabled={pending} className={cx(buttonClass("quiet"), "mt-4")}>
-        {pending ? "Saving…" : "Save count"}
+        {pending ? t.shelf.count.saving : t.shelf.count.save}
       </button>
       {state.message && (
         <Notice key={state.seq} id="count-result" tone={state.status === "error" ? "error" : "done"}>

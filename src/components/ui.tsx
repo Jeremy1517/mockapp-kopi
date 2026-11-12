@@ -10,7 +10,7 @@ export const buttonClass = (variant: "primary" | "quiet" = "primary") =>
     "disabled:cursor-not-allowed disabled:opacity-50",
     focus,
     variant === "primary"
-      ? "bg-jade text-white hover:bg-jade-deep"
+      ? "bg-jade text-on-jade hover:bg-jade-deep"
       : "border-2 border-jade/25 text-jade hover:border-jade hover:bg-porcelain",
   );
 

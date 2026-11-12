@@ -1,4 +1,6 @@
 import type { CSSProperties } from "react";
+import { joinList, type Dictionary } from "@/i18n";
+import type { Locale } from "@/i18n/config";
 import type { CupKind, LayerKind, Recipe } from "@/lib/coffee/recipes";
 
 /**
@@ -25,7 +27,6 @@ interface CupShape {
   /** Curved sides that run straight into the rim, like a cappuccino cup. */
   bowl?: boolean;
   capacity: number;
-  label: string;
 }
 
 const CUPS: Record<CupKind, CupShape> = {
@@ -39,7 +40,6 @@ const CUPS: Record<CupKind, CupShape> = {
     handle: "small",
     saucer: true,
     capacity: 90,
-    label: "a demitasse",
   },
   gibraltar: {
     top: 90,
@@ -48,7 +48,6 @@ const CUPS: Record<CupKind, CupShape> = {
     round: 8,
     wall: "glass",
     capacity: 140,
-    label: "a Gibraltar glass",
   },
   cup: {
     top: 138,
@@ -60,7 +59,6 @@ const CUPS: Record<CupKind, CupShape> = {
     handle: "small",
     saucer: true,
     capacity: 200,
-    label: "a cup",
   },
   mug: {
     top: 114,
@@ -70,7 +68,6 @@ const CUPS: Record<CupKind, CupShape> = {
     wall: "ceramic",
     handle: "large",
     capacity: 300,
-    label: "a mug",
   },
   "tall-glass": {
     top: 100,
@@ -79,7 +76,6 @@ const CUPS: Record<CupKind, CupShape> = {
     round: 10,
     wall: "glass",
     capacity: 330,
-    label: "a tall glass",
   },
   kopitiam: {
     top: 112,
@@ -91,20 +87,19 @@ const CUPS: Record<CupKind, CupShape> = {
     handle: "small",
     saucer: true,
     capacity: 220,
-    label: "a kopitiam cup",
   },
 };
 
-export const LAYER_STYLE: Record<LayerKind, { fill: string; label: string }> = {
-  espresso: { fill: "#4a2414", label: "espresso" },
-  water: { fill: "#d5e9f1", label: "hot water" },
-  milk: { fill: "#f6e9d3", label: "steamed milk" },
-  foam: { fill: "#fffdf8", label: "foam" },
-  chocolate: { fill: "#3a190e", label: "chocolate" },
-  vanilla: { fill: "#ecc670", label: "vanilla syrup" },
-  caramel: { fill: "#b66d28", label: "caramel" },
-  kopi: { fill: "#2c160b", label: "kopi" },
-  condensed: { fill: "#f3dc9f", label: "condensed milk" },
+export const LAYER_STYLE: Record<LayerKind, { fill: string }> = {
+  espresso: { fill: "#4a2414" },
+  water: { fill: "#d5e9f1" },
+  milk: { fill: "#f6e9d3" },
+  foam: { fill: "#fffdf8" },
+  chocolate: { fill: "#3a190e" },
+  vanilla: { fill: "#ecc670" },
+  caramel: { fill: "#b66d28" },
+  kopi: { fill: "#2c160b" },
+  condensed: { fill: "#f3dc9f" },
 };
 
 /** A bowl's side as a cubic curve from the flat base (p0) up to the rim (p3). */
@@ -254,8 +249,8 @@ export function CupDrawing({
 
       {counter && (
         <g>
-          <rect x={-W} y={GROUND} width={W * 3} height="160" fill="#fff" />
-          <rect x={-W} y={GROUND} width={W * 3} height="2" fill="var(--color-jade)" opacity="0.18" />
+          <rect x={-W} y={GROUND} width={W * 3} height="160" fill="var(--color-counter)" />
+          <rect x={-W} y={GROUND} width={W * 3} height="2" fill="var(--color-cup-line)" opacity="0.18" />
           <path
             d={`M-40 ${GROUND + 30}c60 -8 90 10 150 2s110 -14 180 4M-20 ${GROUND + 56}c80 6 130 -12 210 -4`}
             fill="none"
@@ -272,15 +267,15 @@ export function CupDrawing({
           cy={c.saucer ? GROUND : FLOOR}
           rx={c.top / 2 + (c.saucer ? 42 : 14)}
           ry="4"
-          fill="var(--color-jade)"
+          fill="var(--color-cup-line)"
           opacity="0.1"
         />
 
         {c.saucer && (
           <path
             d={`M${CX - c.top / 2 - 34} ${FLOOR}L${CX + c.top / 2 + 34} ${FLOOR}Q${CX + c.top / 2 + 24} ${GROUND} ${CX + c.top / 2 + 6} ${GROUND}L${CX - c.top / 2 - 6} ${GROUND}Q${CX - c.top / 2 - 24} ${GROUND} ${CX - c.top / 2 - 34} ${FLOOR}Z`}
-            fill="#fff"
-            stroke="var(--color-jade)"
+            fill="var(--color-ceramic)"
+            stroke="var(--color-cup-line)"
             strokeWidth="2.5"
             strokeLinejoin="round"
           />
@@ -288,16 +283,28 @@ export function CupDrawing({
 
         {c.handle && (
           <g fill="none" strokeLinecap="round">
-            <path d={handlePath(c)} stroke="var(--color-jade)" strokeWidth="11" />
-            <path d={handlePath(c)} stroke="#fff" strokeWidth="6" />
+            <path d={handlePath(c)} stroke="var(--color-cup-line)" strokeWidth="11" />
+            <path d={handlePath(c)} stroke="var(--color-ceramic)" strokeWidth="6" />
           </g>
         )}
 
         {/* The inside of the cup */}
         <g clipPath={`url(#${id}-inside)`}>
-          <rect x="0" y={rim} width={W} height={c.height} fill={glass ? "#f3f8f6" : "#fbfcfb"} />
+          <rect
+            x="0"
+            y={rim}
+            width={W}
+            height={c.height}
+            fill={glass ? "var(--color-glass-air)" : "var(--color-ceramic-inside)"}
+          />
           {glass && (
-            <rect x="0" y={FLOOR - floorThickness} width={W} height={floorThickness} fill="#dbe8e2" />
+            <rect
+              x="0"
+              y={FLOOR - floorThickness}
+              width={W}
+              height={floorThickness}
+              fill="var(--color-glass-base)"
+            />
           )}
         </g>
 
@@ -348,7 +355,9 @@ export function CupDrawing({
                   strokeDasharray="1"
                   style={{
                     strokeDashoffset: on ? 0 : 1,
-                    transition: still ? undefined : "stroke-dashoffset 1.2s ease-out",
+                    // Round caps still paint a dot on an undrawn line, so fade it out too.
+                    opacity: on ? 1 : 0,
+                    transition: still ? undefined : "stroke-dashoffset 1.2s ease-out, opacity .3s",
                   }}
                 />
               );
@@ -378,22 +387,21 @@ export function CupDrawing({
         <g fill="none" strokeLinecap="round" strokeLinejoin="round">
           {glass ? (
             <>
-              <path d={cupPath(c, false)} stroke="#93b6a8" strokeWidth="3.5" />
+              <path d={cupPath(c, false)} stroke="var(--color-glass)" strokeWidth="3.5" />
               <path
                 d={`M${wallPoint(c, -1, 0.1).x + 9} ${wallPoint(c, -1, 0.1).y}L${wallPoint(c, -1, 0.72).x + 9} ${wallPoint(c, -1, 0.72).y}`}
-                stroke="#fff"
+                stroke="var(--color-glare)"
                 strokeWidth="4"
-                opacity="0.8"
               />
             </>
           ) : (
             <>
-              <path d={cupPath(c, false)} stroke="var(--color-jade)" strokeWidth="11" />
-              <path d={cupPath(c, false)} stroke="#fff" strokeWidth="6" />
+              <path d={cupPath(c, false)} stroke="var(--color-cup-line)" strokeWidth="11" />
+              <path d={cupPath(c, false)} stroke="var(--color-ceramic)" strokeWidth="6" />
               {c.wall === "kopitiam" && (
                 <path
                   d={cupPath(c, false)}
-                  stroke="var(--color-jade)"
+                  stroke="var(--color-cup-line)"
                   strokeWidth="11"
                   clipPath={`url(#${id}-rim)`}
                 />
@@ -403,7 +411,7 @@ export function CupDrawing({
         </g>
 
         {steaming && (
-          <g fill="none" stroke="#a7c1b7" strokeWidth="3" strokeLinecap="round">
+          <g fill="none" stroke="var(--color-steam)" strokeWidth="3" strokeLinecap="round">
             {[-22, 0, 22].map((dx, i) => (
               <path
                 key={dx}
@@ -423,8 +431,13 @@ export function CupDrawing({
   );
 }
 
-export const describeCup = (recipe: Pick<Recipe, "name" | "cup" | "layers">) => {
-  const parts = recipe.layers.map((l) => LAYER_STYLE[l.kind].label);
-  const list = parts.length > 1 ? `${parts.slice(0, -1).join(", ")} and ${parts.at(-1)}` : parts[0];
-  return `${recipe.name} in ${CUPS[recipe.cup].label}: ${list}, from the bottom up`;
-};
+/** Words for screen readers: "Latte in a tall glass: espresso, steamed milk and foam, from the bottom up". */
+export const describeCup = (recipe: Pick<Recipe, "name" | "cup" | "layers">, t: Dictionary, locale: Locale) =>
+  t.recipe.describeCup(
+    recipe.name[locale],
+    t.recipe.cups[recipe.cup],
+    joinList(
+      t,
+      recipe.layers.map((l) => t.recipe.layers[l.kind]),
+    ),
+  );

@@ -125,7 +125,7 @@ export function VesselDrawing({
         )}
       </defs>
 
-      <path d={s.body} fill="var(--color-mint)" />
+      <path d={s.body} fill="var(--color-vessel-empty)" />
       <g clipPath={`url(#${id}-clip)`}>
         <g
           style={{ transform: `translateY(${drop}px)`, transition: "transform .8s cubic-bezier(.3,.7,.4,1)" }}

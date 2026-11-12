@@ -85,6 +85,22 @@ describe("pantry service", () => {
     expect((await getPantry()).log).toHaveLength(0);
   });
 
+  it("answers in Manglish when asked", async () => {
+    const ok = await logDelivery({ ingredient: "condensed-milk", packs: 2 }, "manglish");
+    expect(ok).toMatchObject({ ok: true, message: "Okay, added 2 tin susu pekat." });
+
+    await logCount({ ingredient: "fresh-milk", amount: 300 });
+    const short = await logBrew({ recipe: "latte", cups: 2 }, "manglish");
+    expect(short).toMatchObject({
+      ok: false,
+      kind: "short",
+      message: "Not enough susu segar for 2 latte lah: need 440 ml but rak only got 300 ml.",
+    });
+
+    const invalid = await logCount({ ingredient: "fresh-milk", amount: "" }, "manglish");
+    expect(invalid).toMatchObject({ ok: false, message: "Key in how much you counted." });
+  });
+
   it("serialises concurrent brews so stock can't go negative", async () => {
     await logCount({ ingredient: "fresh-milk", amount: 660 }); // exactly 3 lattes
     const results = await Promise.all(Array.from({ length: 5 }, () => logBrew({ recipe: "latte", cups: 1 })));

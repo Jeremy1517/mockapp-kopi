@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState, useSyncExternalStore, type ReactNode } from "react";
 import type { LayerKind, Recipe } from "@/lib/coffee/recipes";
+import { useI18n } from "@/i18n/client";
 import { CupDrawing, describeCup } from "./cup-drawing";
 import { buttonClass, cx } from "./ui";
 
@@ -39,6 +40,7 @@ export function PourStage({
   footer?: ReactNode;
 }) {
   const { steps } = recipe;
+  const { locale, t } = useI18n();
   const reduced = useReducedMotion();
   const [step, setStep] = useState(-1); // -1: empty cup; steps.length: served
   const [playing, setPlaying] = useState(true);
@@ -90,20 +92,20 @@ export function PourStage({
               pourKey={`${run}-${current}`}
               steaming={done && !reduced}
               counter
-              title={describeCup(recipe)}
+              title={describeCup(recipe, t, locale)}
               className="mx-auto block w-full"
             />
           </div>
           <div className="mx-auto mt-4 flex max-w-[320px] sm:max-w-[380px] items-center justify-between gap-4">
             <p className="text-sm text-ink-soft" aria-live="off">
               {done
-                ? "Ready to serve"
+                ? t.recipe.ready
                 : current < 0
-                  ? "Getting the cup ready"
-                  : `Step ${current + 1} of ${steps.length}`}
+                  ? t.recipe.gettingReady
+                  : t.recipe.step(current + 1, steps.length)}
             </p>
             <button type="button" onClick={pourAgain} className={buttonClass("quiet")}>
-              {reduced ? "Start from step 1" : "Pour again"}
+              {reduced ? t.recipe.startOver : t.recipe.pourAgain}
             </button>
           </div>
         </div>
@@ -114,7 +116,7 @@ export function PourStage({
 
         <section aria-labelledby="method-title" className="mt-12">
           <h2 id="method-title" className="font-sign text-2xl text-jade">
-            Method
+            {t.recipe.method}
           </h2>
           <ol className="mt-4 space-y-1.5">
             {steps.map((s, i) => {
@@ -135,7 +137,7 @@ export function PourStage({
                       className={cx(
                         "flex size-7 shrink-0 items-center justify-center rounded-full font-sign text-base transition-colors duration-300",
                         state === "now"
-                          ? "bg-kaya text-ink"
+                          ? "bg-kaya text-on-kaya"
                           : state === "done"
                             ? "text-jade"
                             : "text-ink-soft",
@@ -144,7 +146,7 @@ export function PourStage({
                       {i + 1}
                     </span>
                     <span className={cx("leading-7", state === "done" ? "text-ink-soft" : "text-ink")}>
-                      {s.text}
+                      {s.text[locale]}
                     </span>
                   </button>
                 </li>

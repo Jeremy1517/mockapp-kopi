@@ -1,28 +1,80 @@
 @import "tailwindcss";
 
+/* `dark:` utilities follow the theme set on <html>, not only the system setting. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
 @theme inline {
   --font-sans: var(--font-archivo);
 }
 
 /*
- * Kopitiam enamel: jade-rimmed cups, checker tile floors, red hand-painted
- * signs and kaya. Coffee colours are reserved for the drinks themselves.
+ * Two greens set the theme: #2b3b2c and #e8eedf. Light mode is light green
+ * paper with dark green ink; dark mode swaps them. Kaya yellow marks what is
+ * happening now and chili red what needs reordering. Coffee colours are kept
+ * for the drinks themselves.
  */
-@theme {
-  --color-enamel: #f4f7f3; /* page */
-  --color-porcelain: #ffffff; /* panels, cups */
-  --color-tile: #d3e3d9; /* tile, hairlines */
-  --color-mint: #e6efe9; /* empty vessel, quiet fills */
-  --color-jade: #0d5c48; /* rims, actions */
-  --color-jade-deep: #08402f;
-  --color-ink: #16352c; /* text */
-  --color-ink-soft: #4f6a61;
-  --color-kaya: #f1bb3d; /* highlight */
-  --color-kaya-soft: #fdf0c9;
-  --color-chili: #bf3326; /* reorder */
-  --color-chili-soft: #fbe5e1;
+@theme static {
+  --color-enamel: #e8eedf; /* page */
+  --color-porcelain: #f4f7ee; /* panels, header */
+  --color-mint: #dce5d0; /* quiet fills */
+  --color-tile: #c8d3bb; /* hairlines, tile grout */
+  --color-wall: #dde6d1; /* tiled wall behind the shelf */
+  --color-jade: #2b3b2c; /* headings, actions, outlines */
+  --color-jade-deep: #1c271d; /* primary button hover */
+  --color-on-jade: #e8eedf; /* text on jade or chili */
+  --color-ink: #2b3b2c; /* body text */
+  --color-ink-soft: #566655;
+  --color-kaya: #f1bb3d; /* the step happening now */
+  --color-kaya-soft: #f6ebc4;
+  --color-on-kaya: #2b3b2c;
+  --color-chili: #b3352a; /* reorder */
+  --color-plank-shadow: #c2ceb4;
+
+  /* Drawings. Cups stay white porcelain in both modes. */
+  --color-vessel-empty: #dce5d0;
+  --color-ceramic: #ffffff;
+  --color-ceramic-inside: #fafbf6;
+  --color-cup-line: #2b3b2c;
+  --color-counter: #f8faf3;
+  --color-glass: #8ea38e;
+  --color-glass-air: #f1f5ea;
+  --color-glass-base: #d3ddc7;
+  --color-glare: rgb(255 255 255 / 0.8);
+  --color-steam: #9cad97;
 
   --animate-steam: steam 2.6s ease-out 3 both;
+}
+
+/*
+ * The inline script in the root layout sets data-theme before first paint:
+ * the visitor's saved choice, otherwise their system setting.
+ */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-enamel: #2b3b2c;
+  --color-porcelain: #334534;
+  --color-mint: #3a4d3b;
+  --color-tile: #4b5f4b;
+  --color-wall: #314232;
+  --color-jade: #e8eedf;
+  --color-jade-deep: #ffffff;
+  --color-on-jade: #2b3b2c;
+  --color-ink: #e8eedf;
+  --color-ink-soft: #aebaa5;
+  --color-kaya-soft: #4b4a2c;
+  --color-chili: #f59d8c;
+  --color-plank-shadow: #223023;
+
+  --color-vessel-empty: #4f634f;
+  --color-ceramic: #f4f6ef;
+  --color-ceramic-inside: #e6ebdf;
+  --color-cup-line: #182219;
+  --color-counter: #415541;
+  --color-glass: #a3b6a0;
+  --color-glass-air: #435744;
+  --color-glass-base: #5a6d5c;
+  --color-glare: rgb(255 255 255 / 0.25);
+  --color-steam: #8c9e88;
 }
 
 @keyframes steam {

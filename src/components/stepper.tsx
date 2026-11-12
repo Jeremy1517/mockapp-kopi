@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18n } from "@/i18n/client";
 import { cx, inputClass } from "./ui";
 
 /** A whole-number field with − and + buttons, big enough to hit behind a busy bar. */
@@ -24,6 +25,7 @@ export function Stepper({
   invalid?: boolean;
   describedBy?: string;
 }) {
+  const { t } = useI18n();
   const clamp = (n: number) => Math.min(max, Math.max(min, Math.round(n)));
   const button = cx(
     "flex size-11 shrink-0 items-center justify-center rounded-full border-2 border-jade/25 text-xl font-bold text-jade transition-colors",
@@ -42,7 +44,7 @@ export function Stepper({
           className={button}
           onClick={() => onChange(clamp(value - 1))}
           disabled={value <= min}
-          aria-label={`One fewer`}
+          aria-label={t.stepper.fewer}
         >
           −
         </button>
@@ -65,7 +67,7 @@ export function Stepper({
           className={button}
           onClick={() => onChange(clamp(value + 1))}
           disabled={value >= max}
-          aria-label={`One more`}
+          aria-label={t.stepper.more}
         >
           +
         </button>

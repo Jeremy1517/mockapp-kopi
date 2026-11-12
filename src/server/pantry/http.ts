@@ -1,5 +1,6 @@
 import "server-only";
 
+import { toLocale, type Locale } from "@/i18n/config";
 import type { ChangeResult } from "./service";
 
 /**
@@ -9,8 +10,13 @@ import type { ChangeResult } from "./service";
  * stock through a visitor's browser: a JSON content type can't be sent cross-site without
  * a CORS preflight (which these routes don't answer), and browsers mark cross-site
  * requests with `Sec-Fetch-Site`. Put real authentication in front before sharing the app.
+ *
+ * Messages are in English unless the URL asks for another language: `?lang=manglish`.
  */
-export async function handleChange(request: Request, change: (body: unknown) => Promise<ChangeResult>) {
+export async function handleChange(
+  request: Request,
+  change: (body: unknown, locale: Locale) => Promise<ChangeResult>,
+) {
   if (request.headers.get("sec-fetch-site") === "cross-site") {
     return Response.json({ error: "Requests from other websites aren't allowed" }, { status: 403 });
   }
@@ -30,7 +36,7 @@ export async function handleChange(request: Request, change: (body: unknown) => 
     return Response.json({ error: "Request body must be valid JSON" }, { status: 400 });
   }
 
-  const result = await change(body);
+  const result = await change(body, toLocale(new URL(request.url).searchParams.get("lang")));
   if (!result.ok) {
     return Response.json(
       { error: result.message, fieldErrors: result.fieldErrors },

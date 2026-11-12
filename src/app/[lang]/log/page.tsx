@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 import { PageTitle, buttonClass } from "@/components/ui";
+import { joinList, type Dictionary } from "@/i18n";
+import { localePath, type Locale } from "@/i18n/config";
+import { getI18n } from "@/i18n/server";
 import { getIngredient } from "@/lib/coffee/ingredients";
 import type { LogEntry } from "@/lib/coffee/log";
 import { getRecipe } from "@/lib/coffee/recipes";
@@ -9,13 +12,17 @@ import { cupsOf, formatAmount, formatPacks } from "@/lib/coffee/stock";
 import { dayKey, formatDay, formatTime } from "@/lib/format";
 import { getPantry } from "@/server/pantry/service";
 
-export const metadata: Metadata = { title: "Bar log" };
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getI18n();
+  return { title: t.log.title };
+}
 
-export default function LogPage() {
+export default async function LogPage() {
+  const { t } = await getI18n();
   return (
     <>
-      <PageTitle title="Bar log">
-        <p>Every cup logged, delivery received and count taken, newest first.</p>
+      <PageTitle title={t.log.title}>
+        <p>{t.log.intro}</p>
       </PageTitle>
       <Suspense fallback={<div className="h-64 max-w-3xl rounded-2xl bg-mint" aria-busy="true" />}>
         <Entries />
@@ -25,21 +32,19 @@ export default function LogPage() {
 }
 
 async function Entries() {
-  const { log } = await getPantry();
+  const [{ log }, { locale, t }] = await Promise.all([getPantry(), getI18n()]);
 
   if (log.length === 0) {
     return (
       <div className="max-w-xl rounded-2xl border-2 border-dashed border-tile p-8">
-        <p className="text-lg font-semibold">Nothing logged yet</p>
-        <p className="mt-1 text-ink-soft">
-          Log a delivery or a count from the shelf, or log cups made from any recipe.
-        </p>
+        <p className="text-lg font-semibold">{t.log.emptyTitle}</p>
+        <p className="mt-1 text-ink-soft">{t.log.emptyBody}</p>
         <div className="mt-6 flex flex-wrap gap-3">
-          <Link href="/" className={buttonClass()}>
-            Go to the shelf
+          <Link href={localePath(locale, "/")} className={buttonClass()}>
+            {t.log.goShelf}
           </Link>
-          <Link href="/recipes" className={buttonClass("quiet")}>
-            Open a recipe
+          <Link href={localePath(locale, "/recipes")} className={buttonClass("quiet")}>
+            {t.log.openRecipe}
           </Link>
         </div>
       </div>
@@ -66,7 +71,7 @@ async function Entries() {
                 <time dateTime={entry.at} className="pt-0.5 text-sm text-ink-soft">
                   {formatTime(entry.at)}
                 </time>
-                <Describe entry={entry} />
+                <Describe entry={entry} locale={locale} t={t} />
               </li>
             ))}
           </ul>
@@ -76,20 +81,20 @@ async function Entries() {
   );
 }
 
-function Describe({ entry }: { entry: LogEntry }) {
+function Describe({ entry, locale, t }: { entry: LogEntry; locale: Locale; t: Dictionary }) {
   switch (entry.kind) {
     case "brew": {
       const recipe = getRecipe(entry.recipe);
       const used = entry.used.map((u) => {
         const { name, unit } = getIngredient(u.ingredient);
-        return `${formatAmount(u.amount, unit)} ${name.toLowerCase()}`;
+        return `${formatAmount(u.amount, unit)} ${name[locale].toLowerCase()}`;
       });
       return (
         <div>
           <p className="font-semibold">
-            Made {recipe ? cupsOf(recipe, entry.cups) : `${entry.cups} × ${entry.recipe}`}
+            {t.log.made(recipe ? cupsOf(recipe, entry.cups, locale) : `${entry.cups} × ${entry.recipe}`)}
           </p>
-          <p className="text-sm text-ink-soft">Used {joinAnd(used)}.</p>
+          <p className="text-sm text-ink-soft">{t.log.used(joinList(t, used))}</p>
         </div>
       );
     }
@@ -98,9 +103,9 @@ function Describe({ entry }: { entry: LogEntry }) {
       return (
         <div>
           <p className="font-semibold">
-            Received {formatPacks(entry.ingredient, entry.packs)} of {name.toLowerCase()}
+            {t.log.received(formatPacks(entry.ingredient, entry.packs, locale), name[locale].toLowerCase())}
           </p>
-          <p className="text-sm text-ink-soft">Added {formatAmount(entry.amount, unit)} to the shelf.</p>
+          <p className="text-sm text-ink-soft">{t.log.added(formatAmount(entry.amount, unit))}</p>
         </div>
       );
     }
@@ -110,18 +115,13 @@ function Describe({ entry }: { entry: LogEntry }) {
       return (
         <div>
           <p className="font-semibold">
-            Counted {formatAmount(entry.counted, unit)} of {name.toLowerCase()}
+            {t.log.counted(formatAmount(entry.counted, unit), name[locale].toLowerCase())}
           </p>
           <p className={diff < 0 ? "text-sm text-chili" : "text-sm text-ink-soft"}>
-            {diff === 0
-              ? "Matched what the shelf expected."
-              : `${formatAmount(Math.abs(diff), unit)} ${diff < 0 ? "less" : "more"} than the shelf expected.`}
+            {diff === 0 ? t.log.matched : t.log.off(formatAmount(Math.abs(diff), unit), diff < 0)}
           </p>
         </div>
       );
     }
   }
 }
-
-const joinAnd = (parts: string[]) =>
-  parts.length > 1 ? `${parts.slice(0, -1).join(", ")} and ${parts.at(-1)}` : (parts[0] ?? "");

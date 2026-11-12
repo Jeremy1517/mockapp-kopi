@@ -1,3 +1,5 @@
+import type { Localized } from "@/i18n/config";
+
 /**
  * Everything the shelf holds. Only ingredients that at least one recipe uses
  * belong here (enforced by catalog.test.ts) — no cups, lids or pastries.
@@ -21,7 +23,7 @@ export type Vessel = "bag" | "carton" | "bottle" | "jar" | "tin";
 
 export interface Ingredient {
   id: IngredientId;
-  name: string;
+  name: Localized;
   unit: Unit;
   /** How it's drawn on the shelf. */
   vessel: Vessel;
@@ -32,7 +34,7 @@ export interface Ingredient {
   /** Reorder once stock drops below this. */
   reorderAt: number;
   /** What one unit of a delivery contains, e.g. a 1 kg bag. */
-  pack: { amount: number; one: string; other: string };
+  pack: { amount: number; one: Localized; other: Localized };
   /** Stock on a brand-new shelf. */
   opening: number;
 }
@@ -40,79 +42,95 @@ export interface Ingredient {
 export const INGREDIENTS: readonly Ingredient[] = [
   {
     id: "espresso-beans",
-    name: "Espresso beans",
+    name: { en: "Espresso beans", manglish: "Espresso beans" },
     unit: "g",
     vessel: "bag",
     color: "#5b3421",
     shelfCapacity: 6000,
     reorderAt: 2000,
-    pack: { amount: 1000, one: "bag", other: "bags" },
+    pack: { amount: 1000, one: { en: "bag", manglish: "bag" }, other: { en: "bags", manglish: "bag" } },
     opening: 3400,
   },
   {
     id: "fresh-milk",
-    name: "Fresh milk",
+    name: { en: "Fresh milk", manglish: "Susu segar" },
     unit: "ml",
     vessel: "carton",
     color: "#fffdf6",
     shelfCapacity: 24000,
     reorderAt: 8000,
-    pack: { amount: 2000, one: "bottle", other: "bottles" },
+    pack: {
+      amount: 2000,
+      one: { en: "bottle", manglish: "botol" },
+      other: { en: "bottles", manglish: "botol" },
+    },
     opening: 9600,
   },
   {
     id: "chocolate-sauce",
-    name: "Chocolate sauce",
+    name: { en: "Chocolate sauce", manglish: "Choc sauce" },
     unit: "g",
     vessel: "bottle",
     color: "#3d1d12",
     shelfCapacity: 2000,
     reorderAt: 600,
-    pack: { amount: 1000, one: "bottle", other: "bottles" },
+    pack: {
+      amount: 1000,
+      one: { en: "bottle", manglish: "botol" },
+      other: { en: "bottles", manglish: "botol" },
+    },
     opening: 1350,
   },
   {
     id: "vanilla-syrup",
-    name: "Vanilla syrup",
+    name: { en: "Vanilla syrup", manglish: "Vanilla syrup" },
     unit: "ml",
     vessel: "bottle",
     color: "#e6c06f",
     shelfCapacity: 1500,
     reorderAt: 500,
-    pack: { amount: 750, one: "bottle", other: "bottles" },
+    pack: {
+      amount: 750,
+      one: { en: "bottle", manglish: "botol" },
+      other: { en: "bottles", manglish: "botol" },
+    },
     opening: 320,
   },
   {
     id: "caramel-sauce",
-    name: "Caramel sauce",
+    name: { en: "Caramel sauce", manglish: "Caramel sauce" },
     unit: "g",
     vessel: "bottle",
     color: "#b66d28",
     shelfCapacity: 2000,
     reorderAt: 500,
-    pack: { amount: 1000, one: "bottle", other: "bottles" },
+    pack: {
+      amount: 1000,
+      one: { en: "bottle", manglish: "botol" },
+      other: { en: "bottles", manglish: "botol" },
+    },
     opening: 900,
   },
   {
     id: "kopi-powder",
-    name: "Kopi powder",
+    name: { en: "Kopi powder", manglish: "Kopi powder" },
     unit: "g",
     vessel: "jar",
     color: "#2f1a0f",
     shelfCapacity: 4000,
     reorderAt: 1000,
-    pack: { amount: 1000, one: "pack", other: "packs" },
+    pack: { amount: 1000, one: { en: "pack", manglish: "pack" }, other: { en: "packs", manglish: "pack" } },
     opening: 2600,
   },
   {
     id: "condensed-milk",
-    name: "Condensed milk",
+    name: { en: "Condensed milk", manglish: "Susu pekat" },
     unit: "g",
     vessel: "tin",
     color: "#f2dca0",
     shelfCapacity: 4000,
     reorderAt: 1200,
-    pack: { amount: 500, one: "tin", other: "tins" },
+    pack: { amount: 500, one: { en: "tin", manglish: "tin" }, other: { en: "tins", manglish: "tin" } },
     opening: 1300,
   },
 ];
