@@ -77,7 +77,7 @@ body {
 
 /* The checker tile that runs along the top of the bar. */
 .tile-strip {
-  background: repeating-conic-gradient(var(--color-jade) 0 25%, var(--color-porcelain) 0 50%) 0 0 / 14px 14px;
+  background: repeating-conic-gradient(var(--color-chili) 0 25%, var(--color-porcelain) 0 50%) 0 0 / 14px 14px;
 }
 
 /* Liquid in vessels and cups: transitions only answer what the user did. */
