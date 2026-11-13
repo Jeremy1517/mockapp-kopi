@@ -15,6 +15,6 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Ingredients live only in `src/lib/coffee/ingredients.ts`, recipes (amounts, layers, steps) only in `src/lib/coffee/recipes.ts`.
 - `src/lib/coffee/stock.ts` is pure — keep I/O out of it and cover changes in `stock.test.ts`.
 - Every stock change goes through `logBrew`, `logDelivery` or `logCount` in `src/server/pantry/service.ts`; the Server Actions (`src/app/actions.ts`) and the `POST /api/*` routes both call them.
-- Colours are tokens in `src/app/globals.css` (theme: `#2b3b2c` / `#e8eedf`); dark mode overrides them under `[data-theme="dark"]`, set before paint by `src/lib/theme.ts`. Dark mode is switched off via `DARK_MODE_ENABLED` there (the button still flips its icon but the page stays light), and the button is hidden via `SHOW_THEME_TOGGLE`. Use tokens, not hex — only drink colours are fixed.
+- Colours are tokens in `src/app/globals.css` (theme: `#2b3b2c` / `#e8eedf`); dark mode overrides them under `[data-theme="dark"]`, set before paint by `src/lib/theme.ts`. `DARK_MODE_ENABLED` and `SHOW_THEME_TOGGLE` there are the kill switches for dark mode and its button. Use tokens, not hex — only drink colours are fixed.
 - Cache Components is on: uncached reads (the JSON store, `searchParams`) must sit inside `<Suspense>`.
 - Run `npm run check` (lint + typecheck + tests) before committing.

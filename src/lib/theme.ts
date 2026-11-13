@@ -2,15 +2,14 @@
 export const THEME_KEY = "kopi-theme";
 
 /**
- * Dark mode is fully built (the dark tokens in globals.css) but switched off
- * for now: the site always renders light, ignoring the system setting and any
- * saved choice, and the header button only flips its own icon. Set this to
- * true to turn dark mode back on.
+ * Dark mode (the dark tokens in globals.css). Set to false to keep the site
+ * light whatever the system setting or saved choice; the header button then
+ * only flips its own icon.
  */
-export const DARK_MODE_ENABLED = false;
+export const DARK_MODE_ENABLED = true;
 
-/** The dark mode button is hidden from the header for now. Set to true to show it again. */
-export const SHOW_THEME_TOGGLE = false;
+/** Shows the dark mode button in the header. */
+export const SHOW_THEME_TOGGLE = true;
 
 /**
  * Runs in <head> before the page paints: the saved choice, otherwise the
