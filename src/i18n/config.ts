@@ -9,12 +9,11 @@ export type Locale = (typeof LOCALES)[number];
 export const DEFAULT_LOCALE: Locale = "en";
 
 /**
- * Languages visitors can actually switch to. Manglish is fully written but
- * switched off for now: the header switch still moves to it, but the page stays
- * in English, and /manglish URLs redirect to English. Add "manglish" here to
- * turn it back on.
+ * Languages visitors can switch to. Leave one out to switch it off: the header
+ * switch still moves to it, but the page stays put, and its URLs redirect to
+ * English.
  */
-export const ENABLED_LOCALES: readonly Locale[] = ["en"];
+export const ENABLED_LOCALES: readonly Locale[] = ["en", "manglish"];
 
 export const isEnabledLocale = (locale: Locale) => ENABLED_LOCALES.includes(locale);
 
